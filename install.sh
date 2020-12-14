@@ -7,3 +7,5 @@ npm i -g cwebp
 npm i -g ytdl 
 npm i
 npm update
+mkdir mp3
+mkdir mp4
