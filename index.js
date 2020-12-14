@@ -59,7 +59,6 @@ conn.on('message-new', async(m) =>
    let id = m.key.remoteJid
    const messageType = Object.keys(messageContent)[0] // message will always contain one key signifying what kind of message
    let imageMessage = m.message.imageMessage;
-   let mediaMessage = m.message.mediaMessage;
    console.log(`[ ${moment().format("HH:mm:ss")} ] (${id.split("@s.whatsapp.net")[0]} => ${text}`);
 
    if (text == '!menu'){
@@ -88,7 +87,7 @@ conn.on('message-new', async(m) =>
       }
    }
 
-   if (messageType == 'mediaMessage')
+   if (messageType === MessageType.video)
    {
       let caption = mediaMessage.caption.toLocaleLowerCase()
       const buffer = await conn.downloadMediaMessage(m)
@@ -104,10 +103,58 @@ conn.on('message-new', async(m) =>
          exec('cwebp -q 50 ' + stiker + ' -o temp/' + jam + '.webp', (error, stdout, stderr) =>
          {
             let stik = fs.readFileSync('temp/' + jam + '.webp')
-            conn.sendMessage(id, stik, MessageType.sticker)
+            conn.sendMessage(id, stik, MessageType.stickergif)
          });
       }
    }
 
+   if (text.includes("!anime"))
+   {
+      var itens = ["anime girl", "anime beautiful", "anime", "anime aesthetic"];
+      var girl = itens[Math.floor(Math.random() * itens.length)];
+      var url = "https://api.fdci.se/rep.php?gambar=" + girl;
+
+      axios.get(url)
+         .then((result) => {
+            var b = JSON.parse(JSON.stringify(result.data));
+            var girls = b[Math.floor(Math.random() * b.length)];
+            imageToBase64(girls)
+            .then(
+               (response) => {
+            var buf = Buffer.from(response, 'base64');
+                  conn.sendMessage(
+                     id, buf, MessageType.image)
+               }
+            )
+            .catch(
+               (error) => {
+                  console.log(error);
+               }
+            )
+         });
+
+   }
+
+   if (text.includes("!tts")) {
+      var idvoz = text.split(" ")[1];
+      var path = require('path');
+      var som = text.replace(`!tts ${idvoz} `, "");
+      var filepath = 'mp3/bacot.wav';
+    
+    gtts.save(filepath, som, function() {
+      console.log(`${filepath} MP3 SAVED!`)
+    });
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+       if(som.length > 200){ // check longness of text, because otherways google translate will give me a empty file
+      conn.sendMessage(id, "Text to long, split in text of 200 characters", MessageType.text);
+    }else{
+    
+    const buffer = fs.readFileSync(filepath)
+       conn.sendMessage(id , buffer , MessageType.audio);
+    
+    };
+
+   }
 
 })
