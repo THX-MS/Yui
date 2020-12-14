@@ -59,6 +59,7 @@ conn.on('message-new', async(m) =>
    let id = m.key.remoteJid
    const messageType = Object.keys(messageContent)[0] // message will always contain one key signifying what kind of message
    let imageMessage = m.message.imageMessage;
+   let mediaMessage = m.message.mediaMessage;
    console.log(`[ ${moment().format("HH:mm:ss")} ] (${id.split("@s.whatsapp.net")[0]} => ${text}`);
 
    if (text == '!menu'){
@@ -87,24 +88,10 @@ conn.on('message-new', async(m) =>
       }
    }
 
-   if (messageType === MessageType.video)
-   {
-      let caption = mediaMessage.caption.toLocaleLowerCase()
-      const buffer = await conn.downloadMediaMessage(m)
-      if (caption == "!stickergif" || caption == "!stikergif")
-      {
-         conn.sendMessage(id, '[Aguarde] ⌛ Carregando Sticker...', MessageType.text)
-
-         const stiker = await conn.downloadAndSaveMediaMessage(m)
-
-         const{
-            exec
-         } = require("child_process");
-         exec('cwebp -q 50 ' + stiker + ' -o temp/' + jam + '.webp', (error, stdout, stderr) =>
-         {
-            let stik = fs.readFileSync('temp/' + jam + '.webp')
-            conn.sendMessage(id, stik, MessageType.stickergif)
-         });
+   if (messageType == Mimetype.gif){
+      const caption = mediaMessage.caption.toLocaleLowerCase()
+      if (caption == "!gifsticker"){
+         conn.sendMessage(id, "Deu certo", MessageType.text)
       }
    }
 
