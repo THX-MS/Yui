@@ -137,7 +137,7 @@ conn.on('message-new', async(m) =>
       }
 
       var timeId = setTimeout(function(){
-      var buffersend = fs.readFileSync("mp3/sound.mp3")
+      var buffersend = fs.readFileSync("mp3/sound.wav")
       conn.sendMessage(id, buffersend, MessageType.audio);}, 5000);
 
       var timeId = setTimeout(function(){
