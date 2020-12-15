@@ -17,6 +17,7 @@ const
    ProxyAgent,
    waChatKey,
 } = require("@adiwajshing/baileys");
+const { count } = require("console");
 var jam = moment().format("HH:mm");
 
 function foreach(arr, func)
@@ -123,25 +124,22 @@ conn.on('message-new', async(m) =>
    }
 
    if (text.includes("!tts")) {
-      var idvoz = text.split(" ")[1];
-      var path = require('path');
-      var som = text.replace(`!tts ${idvoz} `, "");
-      var filepath = 'mp3/bacot.wav';
-    
-    gtts.save(filepath, som, function() {
-      console.log(`${filepath} MP3 SAVED!`)
-    });
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-       if(som.length > 200){ // check longness of text, because otherways google translate will give me a empty file
-      conn.sendMessage(id, "Text to long, split in text of 200 characters", MessageType.text);
-    }else{
-    
-    const buffer = fs.readFileSync(filepath)
-       conn.sendMessage(id , buffer , MessageType.audio);
-    
-    };
 
+      if (text.length > 200){
+         conn.sendMessage(id, "Mensagem muito longa", MessageType.text);
+      }else{
+      const spawn = require("child_process").spawn;
+
+      const process = spawn("python", ["./speak.py", text]);
+
+      process.stdout.on('data', data => {
+         console.log(data.toString());
+      });
+
+      const buffer = fs.readFileSync("mp3/sound.mp3")
+      conn.sendMessage(id, buffer, MessageType.audio);
+
+      }
    }
 
 })

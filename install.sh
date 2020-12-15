@@ -9,3 +9,5 @@ npm i
 npm update
 mkdir mp3
 mkdir mp4
+apt-get install python-pip
+pip install gtts
