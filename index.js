@@ -145,7 +145,7 @@ conn.on('message-new', async(m) =>
       process2.stdout.on('data', data => {
          console.log(data.toString());
       });
-   }, 3000);
+   }, 7000);
    
    }
 
