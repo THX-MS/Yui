@@ -91,7 +91,7 @@ conn.on('message-new', async(m) =>
 
    if (messageType == MessageType.Giphy || messageType == MessageType.video){
       let caption = imageMessage.caption.toLocaleLowerCase()
-      
+
       if (caption == "!gifsticker"){
          conn.sendMessage(id, "Deu certo", MessageType.text)
       }else{
@@ -132,7 +132,7 @@ conn.on('message-new', async(m) =>
 
       // code to run the code skeak.py in python
 
-      const process = spawn("python", ["./speak.py", text]);
+      const process = spawn("python", ["./speech.py", text]);
       process.stdout.on('data', data => {
          console.log(data.toString());
       });
@@ -143,7 +143,7 @@ conn.on('message-new', async(m) =>
 
       // function to send message audio with delay
       setTimeout(function(){
-      const buffer = fs.readFileSync("./mp3/som.wav")
+      const buffer = fs.readFileSync("./mp3/som.ogg")
       conn.sendMessage(id, buffer, MessageType.audio)
 
       // function to delete audio message inside the mp3 folder
