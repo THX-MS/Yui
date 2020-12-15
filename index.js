@@ -60,7 +60,6 @@ conn.on('message-new', async(m) =>
    let id = m.key.remoteJid
    const messageType = Object.keys(messageContent)[0] // message will always contain one key signifying what kind of message
    let imageMessage = m.message.imageMessage;
-   let mediaMessage = m.message.mediaMessage;
    console.log(`[ ${moment().format("HH:mm:ss")} ] (${id.split("@s.whatsapp.net")[0]} => ${text}`);
 
    if (text == '!menu'){
@@ -154,6 +153,56 @@ conn.on('message-new', async(m) =>
    }
 
    if (text.includes("!tts")) {
+      var texttomp3 = require("text-to-mp3");
+      var fs = require("fs");
+      var texto = text.replace("!tts ", "");
+
+      texttomp3.getMp3(texto, function(err, data){
+         if (err){
+            console.log(err);
+         }
+         var file = fs.createWriteStream("./mp3/som.mp3");
+         file.write(data);
+
+         console.log("MP3 SAVED");
+      });
+
+      const buffer = fs.readFileSync("./mp3/som.mp3");
+      conn.sendMessage(id, buffer, MessageType.audio);
+   }
+
+   if (text.includes("!ig")){
+      var msg = text.replace("!ig ", "");
+      var url = "https://api.fdci.se/sosmed/insta.php?url=" + msg;
+      const { exec } = require("child_process");
+
+      function foreach(arr, func){
+         for(var i in arr){
+           func(i, arr[i]);
+         }
+      }
+
+      axios.get(url)
+      .then((result) => {
+      var b = JSON.parse(JSON.stringify(result.data));
+      console.log(b.data[0].url);
+         
+      if(b.url == false){
+         conn.sendMessage(id, "Link não encontrado", MessageType.text);
+      }else if(b.data[0][0].type == "foto"){
+         foreach(b.data[0], function(i, v){
+            imageToBase64(b.data[0][i].url) // Path to the image
+                .then(
+                    (response) => {
+                     const media = new MessageMedia('image/jpeg', response);
+                     conn.sendMessage(id, media, messageType.image);
+                    }
+      )})
+   
+   }
+
+
+   /*if (text.includes("!tts")) {
       const fs = require("fs");
       const spawn = require("child_process").spawn;
 
@@ -172,7 +221,7 @@ conn.on('message-new', async(m) =>
 
       // function to send message audio with delay
       setTimeout(function(){
-      const buffer = fs.readFileSync("./mp3/som.mp3")
+      const buffer = fs.readFileSync("./mp3/som.mp3", {encoding: 'utf-8', flag: 'r'});
       setTimeout(function(){
       conn.sendMessage(id, buffer, MessageType.audio)}, 4000);
 
@@ -185,5 +234,5 @@ conn.on('message-new', async(m) =>
       12000);
       }, 5000);
    }
-   }
-})
+   }*/
+      })}})
