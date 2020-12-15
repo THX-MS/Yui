@@ -3,7 +3,7 @@ apt install
 apt install wget -y
 apt install ffmpeg -y
 apt install nodejs -y
-pkg install python -y
+pkg install python
 npm i -g cwebp
 npm i -g ytdl 
 npm i
