@@ -131,20 +131,16 @@ conn.on('message-new', async(m) =>
          console.log(data.toString());
       });
       var timeId = setTimeout(function(){
-
-      
       if (text.length > 200){
          conn.sendMessage(id, "Mensagem muito longa", MessageType.text);
       }else{
-
       const process = spawn("python", ["./speak.py", text]);
-
       process.stdout.on('data', data => {
          console.log(data.toString());
       });
       }
-      });
-      
+      }, 4000);
+
       var timeId = setTimeout(function(){
       const buffer = fs.readFileSync("mp3/sound.mp3")
       conn.sendMessage(id, buffer, MessageType.audio);}, 5000);
