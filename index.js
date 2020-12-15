@@ -130,7 +130,7 @@ conn.on('message-new', async(m) =>
       if (text.length > 200){
          conn.sendMessage(id, "Mensagem muito longa", MessageType.text);
       }else{
-      var process = spawn("python", ["./speak.py", text]);
+      let process = spawn("python", ["./speak.py", text]);
       process.stdout.on('data', data => {
          console.log(data.toString());
       });
@@ -141,7 +141,7 @@ conn.on('message-new', async(m) =>
       conn.sendMessage(id, buffersend, MessageType.audio);}, 5000);
 
       var timeId = setTimeout(function(){
-      var process2 = spawn("python", ["./delete.py"]);
+      let process2 = spawn("python", ["./delete.py"]);
       process2.stdout.on('data', data => {
          console.log(data.toString());
       });
