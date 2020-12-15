@@ -124,11 +124,16 @@ conn.on('message-new', async(m) =>
    }
 
    if (text.includes("!tts")) {
+      const spawn = require("child_process").spawn;
+
+      const process2 = spawn("python", ["./delete.py"]);
+      process2.stdout.on('data', data => {
+         console.log(data.toString());
+      });
 
       if (text.length > 200){
          conn.sendMessage(id, "Mensagem muito longa", MessageType.text);
       }else{
-      const spawn = require("child_process").spawn;
 
       const process = spawn("python", ["./speak.py", text]);
 
