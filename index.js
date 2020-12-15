@@ -126,9 +126,38 @@ conn.on('message-new', async(m) =>
 
    }
 
+   if (text.includes("!girl"))
+   {
+      var itens = ["girl beautiful", "woman beautiful", "girl thumblr", "girl style"];
+      var girl = itens[Math.floor(Math.random() * itens.length)];
+      var url = "https://api.fdci.se/rep.php?gambar=" + girl;
+
+      axios.get(url)
+         .then((result) => {
+            var b = JSON.parse(JSON.stringify(result.data));
+            var girls = b[Math.floor(Math.random() * b.length)];
+            imageToBase64(girls)
+            .then(
+               (response) => {
+            var buf = Buffer.from(response, 'base64');
+                  conn.sendMessage(
+                     id, buf, MessageType.image)
+               }
+            )
+            .catch(
+               (error) => {
+                  console.log(error);
+               }
+            )
+         });
+
+   }
+
    if (text.includes("!tts")) {
       const fs = require("fs");
       const spawn = require("child_process").spawn;
+
+      conn.sendMessage(id, "[Aguarde] ⌛ Carregando Audio...", MessageType.text)
 
       // code to run the code skeak.py in python
 
@@ -136,15 +165,16 @@ conn.on('message-new', async(m) =>
       process.stdout.on('data', data => {
          console.log(data.toString());
       });
-      await new Promise(resolve => setTimeout(resolve, 500));
 
       if (text.length > 200){
          conn.sendMessage(id, "Mensagem muito longa", MessageType.text);
       }else{
 
       // function to send message audio with delay
+      setTimeout(function(){
       const buffer = fs.readFileSync("./mp3/som.mp3")
-      conn.sendMessage(id, buffer, MessageType.audio)
+      setTimeout(function(){
+      conn.sendMessage(id, buffer, MessageType.audio)}, 4000);
 
       // function to delete audio message inside the mp3 folder
       setTimeout(function(){
@@ -152,7 +182,8 @@ conn.on('message-new', async(m) =>
       process2.stdout.on('data', data => {
          console.log(data.toString());
       });}, 
-      4000);
+      12000);
+      }, 5000);
    }
    }
 })
