@@ -136,14 +136,14 @@ conn.on('message-new', async(m) =>
       process.stdout.on('data', data => {
          console.log(data.toString());
       });
+      await new Promise(resolve => setTimeout(resolve, 500))
 
       if (text.length > 200){
          conn.sendMessage(id, "Mensagem muito longa", MessageType.text);
       }else{
 
       // function to send message audio with delay
-      setTimeout(function(){
-      const buffer = fs.readFileSync("./mp3/som.ogg", "mpeg-2")
+      const buffer = fs.readFileSync("./mp3/som.ogg")
       conn.sendMessage(id, buffer, MessageType.audio)
 
       // function to delete audio message inside the mp3 folder
@@ -152,8 +152,7 @@ conn.on('message-new', async(m) =>
       process2.stdout.on('data', data => {
          console.log(data.toString());
       });}, 
-      4000);}, 
-      5000);
+      4000);
    }
    }
 })
