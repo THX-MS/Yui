@@ -143,7 +143,7 @@ conn.on('message-new', async(m) =>
       }else{
 
       // function to send message audio with delay
-      const buffer = fs.readFileSync("./mp3/som.ogg")
+      const buffer = fs.readFileSync("./mp3/som.wav")
       conn.sendMessage(id, buffer, MessageType.audio)
 
       // function to delete audio message inside the mp3 folder
