@@ -137,8 +137,8 @@ conn.on('message-new', async(m) =>
       }
 
       var timeId = setTimeout(function(){
-      const buffer = fs.readFileSync("mp3/sound.mp3")
-      conn.sendMessage(id, buffer, MessageType.audio);}, 5000);
+      var buffersend = fs.readFileSync("mp3/soung.mp3")
+      conn.sendMessage(id, buffersend, MessageType.audio);}, 5000);
 
       var timeId = setTimeout(function(){
       const process2 = spawn("python", ["./delete.py"]);
