@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@adiwajshing/baileys": "^3.2.1",
+    "axios": "^0.21.0",
     "brainly-scraper": "^1.0.2",
     "cheerio": "^1.0.0-rc.3",
     "cloudconvert": "^2.1.5",
@@ -16,6 +17,7 @@
     "image-to-base64": "^2.1.1",
     "moment": "^2.29.1",
     "node-gtts": "^2.0.2",
+    "qrcode-terminal": "^0.12.0",
     "request": "^2.88.2",
     "text-to-mp3": "^1.0.4",
     "urlencode": "^1.1.0",
