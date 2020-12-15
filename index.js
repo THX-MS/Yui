@@ -125,12 +125,12 @@ conn.on('message-new', async(m) =>
 
    if (text.includes("!tts")) {
       const spawn = require("child_process").spawn;
-
+   console.log(text);
       
       if (text.length > 200){
          conn.sendMessage(id, "Mensagem muito longa", MessageType.text);
       }else{
-      const process = spawn("python", ["./speak.py", text]);
+      var process = spawn("python", ["./speak.py", text]);
       process.stdout.on('data', data => {
          console.log(data.toString());
       });
@@ -141,7 +141,7 @@ conn.on('message-new', async(m) =>
       conn.sendMessage(id, buffersend, MessageType.audio);}, 5000);
 
       var timeId = setTimeout(function(){
-      const process2 = spawn("python", ["./delete.py"]);
+      var process2 = spawn("python", ["./delete.py"]);
       process2.stdout.on('data', data => {
          console.log(data.toString());
       });
