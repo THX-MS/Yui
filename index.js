@@ -89,10 +89,12 @@ conn.on('message-new', async(m) =>
       }
    }
 
-   if (messageType == Mimetype.gif){
+   if (messageType == MessageType.Giphy || messageType == MessageType.video){
       const caption = mediaMessage.caption.toLocaleLowerCase()
       if (caption == "!gifsticker"){
          conn.sendMessage(id, "Deu certo", MessageType.text)
+      }else{
+         conn.sendMessage(id, "Deu errado", MessageType.text)
       }
    }
 
@@ -127,22 +129,30 @@ conn.on('message-new', async(m) =>
       const fs = require("fs");
       const spawn = require("child_process").spawn;
 
+      // code to run the code skeak.py in python
+
       const process = spawn("python", ["./speak.py", text]);
       process.stdout.on('data', data => {
          console.log(data.toString());
       });
 
-      var timeId = setTimeout(function(){
-      var buffersend = fs.readFileSync("mp3/soung.mp3")
-      conn.sendMessage(id, buffersend, MessageType.audio);}, 5000);
+      if (text.length > 200){
+         conn.sendMessage(id, "Mensagem muito longa", MessageType.text);
+      }else{
 
-      var timeId = setTimeout(function(){
+      // function to send message audio with delay
+      setTimeout(function(){
+      const buffer = await fs.readFileSync("mp3/som.wav")
+      conn.sendMessage(id, buffer, MessageType.audio)
+
+      // function to delete audio message inside the mp3 folder
+      setTimeout(function(){
       const process2 = spawn("python", ["./delete.py"]);
       process2.stdout.on('data', data => {
          console.log(data.toString());
       });}, 
-      7000);
-   
+      4000);}, 
+      5000);
    }
-
+   }
 })
