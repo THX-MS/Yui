@@ -90,7 +90,8 @@ conn.on('message-new', async(m) =>
    }
 
    if (messageType == MessageType.Giphy || messageType == MessageType.video){
-      const caption = mediaMessage.caption.toLocaleLowerCase()
+      let caption = imageMessage.caption.toLocaleLowerCase()
+      
       if (caption == "!gifsticker"){
          conn.sendMessage(id, "Deu certo", MessageType.text)
       }else{
@@ -142,7 +143,7 @@ conn.on('message-new', async(m) =>
 
       // function to send message audio with delay
       setTimeout(function(){
-      const buffer = fs.readFileSync("mp3/som.wav")
+      const buffer = fs.readFileSync("./mp3/som.wav")
       conn.sendMessage(id, buffer, MessageType.audio)
 
       // function to delete audio message inside the mp3 folder
