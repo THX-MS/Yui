@@ -1,6 +1,6 @@
 import os
 
-fileTest = "./mp3/sound.wav"
+fileTest = "mp3/sound.wav"
 
 try:
     os.remove(fileTest)
