@@ -126,11 +126,7 @@ conn.on('message-new', async(m) =>
    if (text.includes("!tts")) {
       const spawn = require("child_process").spawn;
 
-      const process2 = spawn("python", ["./delete.py"]);
-      process2.stdout.on('data', data => {
-         console.log(data.toString());
-      });
-      var timeId = setTimeout(function(){
+      
       if (text.length > 200){
          conn.sendMessage(id, "Mensagem muito longa", MessageType.text);
       }else{
@@ -139,11 +135,17 @@ conn.on('message-new', async(m) =>
          console.log(data.toString());
       });
       }
-      }, 5000);
 
       var timeId = setTimeout(function(){
       const buffer = fs.readFileSync("mp3/sound.mp3")
-      conn.sendMessage(id, buffer, MessageType.audio);}, 7000);
+      conn.sendMessage(id, buffer, MessageType.audio);}, 5000);
+
+      var timeId = setTimeout(function(){
+      const process2 = spawn("python", ["./delete.py"]);
+      process2.stdout.on('data', data => {
+         console.log(data.toString());
+      });
+   }, 3000);
    
    }
 
