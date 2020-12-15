@@ -154,7 +154,6 @@ conn.on('message-new', async(m) =>
 
    if (text.includes("!tts")) {
       var texttomp3 = require("text-to-mp3");
-      var fs = require("fs");
       var texto = text.replace("!tts ", "");
 
       conn.sendMessage(id, "[Aguarde] ⌛ Carregando Audio...", MessageType.text);
