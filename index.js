@@ -66,13 +66,13 @@ conn.on('message-new', async(m) =>
     conn.sendMessage(id, menu.menu ,MessageType.text);
     }
 
-    if (messageType == 'imageMessage')
+   if (messageType == 'imageMessage')
    {
       let caption = imageMessage.caption.toLocaleLowerCase()
       const buffer = await conn.downloadMediaMessage(m) // to decrypt & use as a buffer
       if (caption == '!sticker' || caption == "!stiker")
       {
-        conn.sendMessage(id, '[Aguarde] ⌛ Carregando Sticker...', MessageType.text)
+        conn.sendMessage(id, '[Aguarde] ⌛ Carregando Sticker...', MessageType.text) // modificação top
 
          const stiker = await conn.downloadAndSaveMediaMessage(m) // to decrypt & save to file
 
@@ -88,7 +88,7 @@ conn.on('message-new', async(m) =>
       }
    }
 
-   if (messageType == MessageType.Giphy || messageType == MessageType.video){
+   /*if (messageType == MessageType.Giphy || messageType == MessageType.video){
       let caption = imageMessage.caption.toLocaleLowerCase()
 
       if (caption == "!gifsticker"){
@@ -96,7 +96,7 @@ conn.on('message-new', async(m) =>
       }else{
          conn.sendMessage(id, "Deu errado", MessageType.text)
       }
-   }
+   }*/
 
    if (text.includes("!anime"))
    {
@@ -157,6 +157,8 @@ conn.on('message-new', async(m) =>
       var fs = require("fs");
       var texto = text.replace("!tts ", "");
 
+      conn.sendMessage(id, "[Aguarde] ⌛ Carregando Audio...", MessageType.text);
+
       texttomp3.getMp3(texto, function(err, data){
          if (err){
             console.log(err);
@@ -166,41 +168,11 @@ conn.on('message-new', async(m) =>
 
          console.log("MP3 SAVED");
       });
-
+      setTimeout(function(){
       const buffer = fs.readFileSync("./mp3/som.mp3");
       conn.sendMessage(id, buffer, MessageType.audio);
+      }, 5000);
    }
-
-   if (text.includes("!ig")){
-      var msg = text.replace("!ig ", "");
-      var url = "https://api.fdci.se/sosmed/insta.php?url=" + msg;
-      const { exec } = require("child_process");
-
-      function foreach(arr, func){
-         for(var i in arr){
-           func(i, arr[i]);
-         }
-      }
-
-      axios.get(url)
-      .then((result) => {
-      var b = JSON.parse(JSON.stringify(result.data));
-      console.log(b.data[0].url);
-         
-      if(b.url == false){
-         conn.sendMessage(id, "Link não encontrado", MessageType.text);
-      }else if(b.data[0][0].type == "foto"){
-         foreach(b.data[0], function(i, v){
-            imageToBase64(b.data[0][i].url) // Path to the image
-                .then(
-                    (response) => {
-                     const media = new MessageMedia('image/jpeg', response);
-                     conn.sendMessage(id, media, messageType.image);
-                    }
-      )})
-   
-   }
-
 
    /*if (text.includes("!tts")) {
       const fs = require("fs");
@@ -235,4 +207,4 @@ conn.on('message-new', async(m) =>
       }, 5000);
    }
    }*/
-      })}})
+      })

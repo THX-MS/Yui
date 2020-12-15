@@ -1,4 +1,5 @@
 apt upgrade
+mkdir mp3
 apt install
 apt install wget -y
 apt install ffmpeg -y
@@ -7,5 +8,3 @@ npm i -g cwebp
 npm i -g ytdl 
 npm i
 npm update
-mkdir mp3
-mkdir mp4
