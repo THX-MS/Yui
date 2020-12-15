@@ -139,7 +139,7 @@ conn.on('message-new', async(m) =>
          console.log(data.toString());
       });
       }
-      }, 4000);
+      }, 5000);
 
       var timeId = setTimeout(function(){
       const buffer = fs.readFileSync("mp3/sound.mp3")
