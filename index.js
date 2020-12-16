@@ -152,15 +152,41 @@ conn.on('message-new', async(m) =>
 
    if (text.includes("!boy"))
    {
-      var itens = ["garoto lindo", "garoto sexy", "garoto thumblr", "garota estiloso"];
+      var itens = ["homem lindo", "homem sexy", "homem thumblr", "homem estiloso"];
       var boy = itens[Math.floor(Math.random() * itens.length)];
       var url = "https://api.fdci.se/rep.php?gambar=" + boy;
 
       axios.get(url)
          .then((result) => {
             var b = JSON.parse(JSON.stringify(result.data));
-            var girls = b[Math.floor(Math.random() * b.length)];
-            imageToBase64(girls)
+            var boys = b[Math.floor(Math.random() * b.length)];
+            imageToBase64(boys)
+            .then(
+               (response) => {
+            var buf = Buffer.from(response, 'base64');
+                  conn.sendMessage(
+                     id, buf, MessageType.image)
+               }
+            )
+            .catch(
+               (error) => {
+                  console.log(error);
+               }
+            )
+         });
+
+   }
+
+   if (text.includes("!searchimage"))
+   {
+      var texto = text.replace("!searchimage ", "");
+      var url = "https://api.fdci.se/rep.php?gambar=" + texto;
+
+      axios.get(url)
+         .then((result) => {
+            var b = JSON.parse(JSON.stringify(result.data));
+            var imagem = b[Math.floor(Math.random() * b.length)];
+            imageToBase64(imagem)
             .then(
                (response) => {
             var buf = Buffer.from(response, 'base64');
