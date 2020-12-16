@@ -88,15 +88,13 @@ conn.on('message-new', async(m) =>
       }
    }
 
-   /*if (messageType == MessageType.Giphy || messageType == MessageType.video){
+   if (messageType == 'imageMessage'){
       let caption = imageMessage.caption.toLocaleLowerCase()
 
-      if (caption == "!gifsticker"){
-         conn.sendMessage(id, "Deu certo", MessageType.text)
-      }else{
-         conn.sendMessage(id, "Deu errado", MessageType.text)
+      if (caption == "!gifsticker" || caption == "!stickergif"){
+         conn.sendMessage(id, "Deu certo", MessageType.text);
       }
-   }*/
+   }
 
    if (text.includes("!anime"))
    {
@@ -155,6 +153,7 @@ conn.on('message-new', async(m) =>
    if (text.includes("!tts")) {
       var texttomp3 = require("text-to-mp3");
       var texto = text.replace("!tts ", "");
+      const filepath = "./mp3/som.mp3";
 
       conn.sendMessage(id, "[Aguarde] ⌛ Carregando Audio...", MessageType.text);
 
@@ -162,15 +161,17 @@ conn.on('message-new', async(m) =>
          if (err){
             console.log(err);
          }
-         var file = fs.createWriteStream("./mp3/som.mp3");
+         var file = fs.createWriteStream(filepath);
          file.write(data);
 
          console.log("MP3 SAVED");
       });
       setTimeout(function(){
-      const buffer = fs.readFileSync("./mp3/som.mp3");
-      conn.sendMessage(id, buffer, MessageType.audio);
-      }, 5000);
+         const buffer = fs.readFile(filepath);
+         setTimeout(function(){
+            conn.sendMessage(id, buffer, MessageType.audio);
+         }, 3000);
+      }, 3000);
    }
 
    /*if (text.includes("!tts")) {
