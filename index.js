@@ -125,9 +125,36 @@ conn.on('message-new', async(m) =>
 
    if (text.includes("!girl"))
    {
-      var itens = ["girl beautiful", "woman beautiful", "girl thumblr", "girl style"];
+      var itens = ["garota linda", "garota sexy", "garota thumblr", "garota estilosa"];
       var girl = itens[Math.floor(Math.random() * itens.length)];
       var url = "https://api.fdci.se/rep.php?gambar=" + girl;
+
+      axios.get(url)
+         .then((result) => {
+            var b = JSON.parse(JSON.stringify(result.data));
+            var girls = b[Math.floor(Math.random() * b.length)];
+            imageToBase64(girls)
+            .then(
+               (response) => {
+            var buf = Buffer.from(response, 'base64');
+                  conn.sendMessage(
+                     id, buf, MessageType.image)
+               }
+            )
+            .catch(
+               (error) => {
+                  console.log(error);
+               }
+            )
+         });
+
+   }
+
+   if (text.includes("!boy"))
+   {
+      var itens = ["garoto lindo", "garoto sexy", "garoto thumblr", "garota estiloso"];
+      var boy = itens[Math.floor(Math.random() * itens.length)];
+      var url = "https://api.fdci.se/rep.php?gambar=" + boy;
 
       axios.get(url)
          .then((result) => {
@@ -167,11 +194,16 @@ conn.on('message-new', async(m) =>
          console.log("MP3 SAVED");
       });
       setTimeout(function(){
-         const buffer = fs.readFile(filepath);
+         const buffer = fs.readFileSync(filepath);
          setTimeout(function(){
             conn.sendMessage(id, buffer, MessageType.audio);
          }, 3000);
       }, 3000);
+   }
+
+   if (text.includes("!say")){
+      var texto = text.replace("!say ", "");
+      conn.sendMessage(id, texto, MessageType.text);
    }
 
    /*if (text.includes("!tts")) {
