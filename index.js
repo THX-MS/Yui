@@ -185,7 +185,7 @@ conn.on('message-new', async(m) =>
       axios.get(url)
          .then((result) => {
             var b = JSON.parse(JSON.stringify(result.data));
-            var imagem = b[Math.floor(Math.random() * b.length)];
+            var imagem = b[1];
             imageToBase64(imagem)
             .then(
                (response) => {
@@ -201,6 +201,11 @@ conn.on('message-new', async(m) =>
             )
          });
 
+   }
+
+   if (text.includes("!test id")){
+      conn.sendMessage(id, id, MessageType.text);
+      conn.sendMessage(id, messageType, MessageType.text);
    }
 
    if (text.includes("!tts")) {
