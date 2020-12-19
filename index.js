@@ -203,10 +203,8 @@ conn.on('message-new', async(m) =>
 
    }
 
-   if (text.includes("!test id")){
-      conn.sendMessage(id, id, MessageType.text);
-      conn.sendMessage(id, messageType, MessageType.text);
-   }
+   conn.sendMessage(id, id, MessageType.text);
+   conn.sendMessage(id, messageType, MessageType.text);
 
    if (text.includes("!tts")) {
       var texttomp3 = require("text-to-mp3");
