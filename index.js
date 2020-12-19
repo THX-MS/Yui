@@ -203,7 +203,7 @@ conn.on('message-new', async(m) =>
 
    }
 
-   if (text.includes("!test id"){
+   if (text.includes("!test id")){
       conn.sendMessage(id, id, MessageType.text);
       conn.sendMessage(id, MessageType + " / " + messageType, MessageType.text);
    }
