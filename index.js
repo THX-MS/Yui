@@ -91,9 +91,22 @@ conn.on('message-new', async(m) =>
 
    if (messageType == 'videoMessage'){
       let caption = videoMessage.caption.toLocaleLowerCase()
+      const buffer = await conn.downloadMediaMessage(m)
 
       if (caption == "!gifsticker" || caption == "!stickergif"){
-         conn.sendMessage(id, "Deu certo", MessageType.text);
+         conn.sendMessage(id, "[Aguarde] ⌛ Carregando Sticker...'", MessageType.text);
+         
+         const stiker = await conn.downloadAndSaveMediaMessage(m) // to decrypt & save to file
+
+         const
+         {
+            exec
+         } = require("child_process");
+         exec('cwebp -q 50 ' + stiker + ' -o temp/' + jam + '.webp', (error, stdout, stderr) =>
+         {
+            let stik = fs.readFileSync('temp/' + jam + '.webp')
+            conn.sendMessage(id, stik, MessageType.sticker)
+         });
       }
    }
 
