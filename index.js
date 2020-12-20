@@ -102,9 +102,9 @@ conn.on('message-new', async(m) =>
          {
             exec
          } = require("child_process");
-         exec('cwebp -q 50 ' + stiker + ' -o temp/' + jam + '.webp', (error, stdout, stderr) =>
+         exec('cwebp -q 50 ' + stiker + ' -o gif/' + jam + '.webp', (error, stdout, stderr) =>
          {
-            let stik = fs.readFileSync('temp/' + jam + '.webp')
+            let stik = fs.readFileSync('gif/' + jam + '.webp')
             conn.sendMessage(id, stik, MessageType.sticker)
          });
       }
