@@ -60,6 +60,7 @@ conn.on('message-new', async(m) =>
    let id = m.key.remoteJid
    const messageType = Object.keys(messageContent)[0] // message will always contain one key signifying what kind of message
    let imageMessage = m.message.imageMessage;
+   let videoMessage = m.message.videoMessage;
    console.log(`[ ${moment().format("HH:mm:ss")} ] (${id.split("@s.whatsapp.net")[0]} => ${text}`);
 
    if (text == '!menu'){
@@ -88,8 +89,8 @@ conn.on('message-new', async(m) =>
       }
    }
 
-   if (messageType == 'imageMessage'){
-      let caption = imageMessage.caption.toLocaleLowerCase()
+   if (messageType == 'videoMessage'){
+      let caption = videoMessage.caption.toLocaleLowerCase()
 
       if (caption == "!gifsticker" || caption == "!stickergif"){
          conn.sendMessage(id, "Deu certo", MessageType.text);
