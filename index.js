@@ -77,6 +77,8 @@ conn.on('message-new', async(m) =>
 
          const stiker = await conn.downloadAndSaveMediaMessage(m) // to decrypt & save to file
 
+         console.log(stiker);
+
          const
          {
             exec
@@ -96,22 +98,35 @@ conn.on('message-new', async(m) =>
       if (caption == "!gifsticker" || caption == "!stickergif"){
          conn.sendMessage(id, "[Aguarde] ⌛ Carregando Sticker...'", MessageType.text);
          
-         const stiker = await conn.downloadAndSaveMediaMessage(m) // to decrypt & save to file
+         const stiker = await conn.downloadAndSaveMediaMessage(m, "teste.mp4") // to decrypt & save to file
 
-         const
-         {
-            exec
-         } = require("child_process");
-         exec('cwebp -q 50 ' + stiker + ' -o gif/' + jam + '.webp', (error, stdout, stderr) =>
-         {
-            setTimeout(function() {
-               let stik = fs.readFileSync('gif/' + jam + '.webp')
-               setTimeout(function() {
-                  conn.sendMessage(id, stik, MessageType.sticker)
-               }, 3000);
-            }, 3000);
-         });
+         conn.sendMessage(id, "Media Salva em " + stiker);
       }
+   }
+
+   if (text.includes("!add")){
+      let texto = text.replace("!add ", "");
+      await conn.groupAdd(id, [texto + "@s.whatsapp.net"])
+   }
+
+   if (text.includes("!promover")){
+      let texto = text.replace("!promover ", "");
+      await conn.groupMakeAdmin(id, [texto + "@s.whatsapp.net"])
+   }
+
+   if (text.includes("!rebaixar")){
+      let texto = text.replace("!rebaixar ", "");
+      await conn.groupDemoteAdmin(id, [texto + "@s.whatsapp.net"])
+   }
+
+   if (text.includes("!kick")){
+      let texto = text.replace("!kick ", "");
+      await conn.groupRemove(id, [texto + "@s.whatsapp.net"])
+   }
+
+   if (text.includes("!desc")){
+      let texto = text.replace("!desc ", "");
+      await conn.groupUpdateDescription(id, texto)
    }
 
    if (text.includes("!anime"))
@@ -195,9 +210,9 @@ conn.on('message-new', async(m) =>
 
    }
 
-   if (text.includes("!searchimage"))
+   if (text.includes("!simg"))
    {
-      var texto = text.replace("!searchimage ", "");
+      var texto = text.replace("!simg ", "");
       var url = "https://api.fdci.se/rep.php?gambar=" + texto;
 
       axios.get(url)
@@ -221,9 +236,26 @@ conn.on('message-new', async(m) =>
 
    }
 
-   if (text.includes("!test id")){
-      conn.sendMessage(id, id, MessageType.text);
-      conn.sendMessage(id, MessageType + " / " + messageType, MessageType.text);
+   if (text == "!hentai"){
+
+      var tempo = moment().format("HH");
+
+      if (tempo == "00"){
+      axios.get(`https://tobz-api.herokuapp.com/api/hentai`).then((res) => {
+         imageToBase64(res.data.result)
+         .then((ress) => {
+            var buf = Buffer.from(ress, 'base64');
+            conn.sendMessage(id, buf, MessageType.image, {caption: "*_Imagem enviada com sucesso!_*"})
+         });
+      });
+      }else {
+         conn.sendMessage(id, "Este comando só funciona entre 00:00h à 00:59h", MessageType.text);
+      }
+   }
+
+   if (text == "!test id") {
+   conn.sendMessage(id, id, MessageType.text);
+   conn.sendMessage(id, MessageType + " / " + messageType, MessageType.text);
    }
 
    if (text.includes("!tts")) {
@@ -242,12 +274,18 @@ conn.on('message-new', async(m) =>
 
          console.log("MP3 SAVED");
       });
-      setTimeout(function(){
-         const buffer = fs.readFileSync(filepath);
-         setTimeout(function(){
-            conn.sendMessage(id, buffer, MessageType.audio);
-         }, 3000);
+
+      setTimeout(function() {
+         let fileaudio = fs.readFileSync(filepath);
+         conn.sendMessage(id, fileaudio, MessageType.audio);
       }, 3000);
+   }
+
+   if (text == "!send audio"){
+      let audiokk = fs.readFileSync("./mp3/som.mp3");
+      let options = {mimetype: Mimetype.mp4Audio, ptt: true}
+
+      await conn.sendMessage(id, audiokk, MessageType.audio, options)
    }
 
    if (text.includes("!say")){
