@@ -104,6 +104,15 @@ conn.on('message-new', async(m) =>
       }
    }
 
+   if (text.includes("!chat")){
+      let texto = text.replace("!chat ", "");
+      let url = "https://tobz-api.herokuapp.com/api/simsimi?text=" + texto;
+      axios.get(url).then((res) => {
+         let enviar = res.data.result;
+         conn.sendMessage(id, enviar, MessageType.text)
+      });
+   }
+
    if (text.includes("!add")){
       let texto = text.replace("!add ", "");
       await conn.groupAdd(id, [texto + "@s.whatsapp.net"])
@@ -251,6 +260,17 @@ conn.on('message-new', async(m) =>
       }else {
          conn.sendMessage(id, "Este comando só funciona entre 00:00h à 00:59h", MessageType.text);
       }
+   }
+
+   if (text == "!loli"){
+
+      axios.get(`https://tobz-api.herokuapp.com/api/randomloli`).then((res) => {
+         imageToBase64(res.data.result)
+         .then((ress) => {
+            var buf = Buffer.from(ress, 'base64');
+            conn.sendMessage(id, buf, MessageType.image, {caption: "*_Imagem enviada com sucesso!_*"})
+         });
+      });
    }
 
    if (text == "!test id") {
