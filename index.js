@@ -91,19 +91,6 @@ conn.on('message-new', async(m) =>
       }
    }
 
-   if (messageType == 'videoMessage'){
-      let caption = videoMessage.caption.toLocaleLowerCase()
-      const buffer = await conn.downloadMediaMessage(m)
-
-      if (caption == "!gifsticker" || caption == "!stickergif"){
-         conn.sendMessage(id, "[Aguarde] ⌛ Carregando Sticker...'", MessageType.text);
-         
-         const stiker = await conn.downloadAndSaveMediaMessage(m, "teste.mp4") // to decrypt & save to file
-
-         conn.sendMessage(id, "Media Salva em " + stiker);
-      }
-   }
-
    if (text.includes("!chat")){
       let texto = text.replace("!chat ", "");
       let url = "https://tobz-api.herokuapp.com/api/simsimi?text=" + texto;
