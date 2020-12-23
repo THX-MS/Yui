@@ -91,8 +91,8 @@ conn.on('message-new', async(m) =>
       }
    }
 
-   if (text.includes("!chat")){
-      let texto = text.replace("!chat ", "");
+   if (text.includes("Yui")){
+      let texto = text.replace("Yui ", "");
       let url = "https://tobz-api.herokuapp.com/api/simsimi?text=" + texto;
       axios.get(url).then((res) => {
          let enviar = res.data.result;
